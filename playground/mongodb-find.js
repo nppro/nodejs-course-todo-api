@@ -39,6 +39,7 @@ MongoClient.connect(url, (err, db) => {
     db.collection('Users').find({name: 'Nguyen'}).toArray().then((docs) => {
         console.log(JSON.stringify(docs, undefined, 2));
     })
+    
 
     // db.close();
 });
