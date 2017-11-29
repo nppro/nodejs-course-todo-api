@@ -1,0 +1,52 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title":"Web API todo node js - express",
+        "description": "WEB API TODO",
+        "version": "1.0"
+    },
+    "schemes": ["http"],
+    "produces": ["application/json"],
+    "paths":{
+        "/todos":{
+            "get":{
+                "operationId": "index",
+                "tags": ["todos"],
+                "summary": "Find all todos",
+                "description": "Hàm lấy tất cả các todo",
+                "parameters": [ ],
+                "responses": {
+                    "200":{
+                        "description": "successful operation",
+                        "schema":{
+                            "type":"array",
+                            "items": {
+                                "$ref": "#/definitions/todo"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions":{
+        "todo":{
+            "type": "object",
+            "required":["text"],
+            "properties":{
+                "text":{
+                    "type":"string"
+                },
+                "completed":{
+                    "type":"boolean",
+                    "default":"false"
+                },
+                "completedAt":{
+                    "type": "integer",
+                    "format":"int32",
+                    "default":"null"
+                }
+            }
+        }
+    }
+}
