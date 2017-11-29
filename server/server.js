@@ -8,21 +8,27 @@ var {User} = require('./models/user');
 
 var app = express();
 
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
+app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.send('Welcome to api todo design by Phuoc');
+    // dùng hàm res.redirect để chuyên hướng đường dẫn request tới đường dẫn mong muốn 
+    res.redirect('/api-doc');
 });
 
 app.get('/todos', (req, res) => {
-    Todo.find({'completedAt': {$gt:0}})
+    Todo.find({})
+    // Todo.find({'completedAt': {$gt:0}})
     .then((doc, err) => {
         if(err)
             res.send(err);
         res.send(doc);
-    })
+    });
     
-})
+});
 
 app.post('/todos', (req, res) => {
     var todo = new Todo({
@@ -37,9 +43,9 @@ app.post('/todos', (req, res) => {
         res.send(err);
     })
     // console.log(req.body);
-})
+});
 
 
 app.listen(5000, () => {
     console.log('Server run on port 5000');
-})
+});
