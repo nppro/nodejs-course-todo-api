@@ -26,6 +26,34 @@
                         }
                     }
                 }
+            },
+            "post":{
+                "tags":["todos"],
+                "summary": "Add new todo",
+                "description":"Hàm tạo mới todo",
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "description": "Pet object that needs to be added to the store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/todo"
+                    }
+                }],
+                "responses": {
+                    "405": {
+                    "description": "Invalid input"
+                    },
+                    "200": {
+                        "description": "add todo succesfull",
+                        "schema":{
+                            "type":"object",
+                            "items": {
+                                "$ref": "#/definitions/todo"
+                            }
+                        }
+                    }
+                }
             }
         }
     },

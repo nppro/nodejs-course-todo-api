@@ -25,7 +25,7 @@ app.get('/todos', (req, res) => {
     .then((doc, err) => {
         if(err)
             res.send(err);
-        res.send(doc);
+        res.status(400).send(doc);
     });
     
 });
@@ -40,12 +40,16 @@ app.post('/todos', (req, res) => {
     todo.save().then((doc) => {
         res.send(doc);
     }, (err) => {
-        res.send(err);
+        res.status(400).send(err);
     })
     // console.log(req.body);
 });
 
 
+
+
 app.listen(5000, () => {
     console.log('Server run on port 5000');
 });
+
+module.exports = {app};
