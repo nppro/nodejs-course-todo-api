@@ -22,10 +22,17 @@ app.get('/', (req, res) => {
 app.get('/todos', (req, res) => {
     Todo.find({})
     // Todo.find({'completedAt': {$gt:0}})
-    .then((doc, err) => {
+    .then((todos, err) => {
         if(err)
-            res.send(err);
-        res.status(400).send(doc);
+            res.status(400).send({
+                status: 0,
+                description: err
+            });
+        res.send({
+            todos: todos,
+            status: 1,
+            description: 'Get Ok !'
+        });
     });
     
 });
@@ -44,6 +51,8 @@ app.post('/todos', (req, res) => {
     })
     // console.log(req.body);
 });
+
+
 
 
 
