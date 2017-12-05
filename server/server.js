@@ -8,6 +8,7 @@ var {User} = require('./models/user');
 var {ObjectID} = require('mongodb'); 
 
 var app = express();
+const port = process.env.PORT || 5000;
 
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
@@ -58,7 +59,7 @@ app.get('/todos/:id', (req, res) => {
             status: 1,
             description: 'Find OK!'
         });
-        
+
     }).catch((e) => {
         res.status(400).send(e);
     })
@@ -84,8 +85,8 @@ app.post('/todos', (req, res) => {
 
 
 
-app.listen(5000, () => {
-    console.log('Server run on port 5000');
+app.listen(port, () => {
+    console.log(`Server run on port ${port}`);
 });
 
 module.exports = {app};
