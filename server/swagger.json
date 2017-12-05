@@ -27,6 +27,7 @@
                     }
                 }
             },
+        
             "post":{
                 "tags":["todos"],
                 "summary": "Add new todo",
@@ -55,13 +56,42 @@
                     }
                 }
             }
+        },
+        "/todos/{id}":{
+            "get":{
+                "tags": ["todos"],
+                "summary": "Finds Todos by ID",
+                "description":"Lấy một todo theo id truyền vào",
+                "parameters":[{
+                    "name":"id",
+                    "in":"path",
+                    "description":"Todos to filter by id",
+                    "type":"string",
+                    "required":true
+                }],
+                "responses":{
+                    "200": {
+                        "description":"successful operation",
+                        "schema": {
+                            "type":"array",
+                            "item": {
+                                "$ref": "#/definitions/todo"
+                            }
+                        }
+                    }   
+                }
+            }
         }
+    
     },
     "definitions":{
         "todo":{
             "type": "object",
             "required":["text"],
             "properties":{
+                "_id":{
+                    "type":"string"
+                },
                 "text":{
                     "type":"string"
                 },
