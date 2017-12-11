@@ -80,7 +80,30 @@ app.post('/todos', (req, res) => {
     // console.log(req.body);
 });
 
-
+// api delete todo
+app.delete('/todos/:id', (req, res ) => {
+    var id = req.params.id;
+    // check valid id object
+    if(!ObjectID.isValid(id)){
+        return res.status(404).send('Id not valid');
+    }
+// remove todobyid
+    Todo.findOneAndRemove(id).then((result) => {
+        if(!result)
+         //fail return 404
+            return res.status(404).send('Todo not found');
+        //success return 200
+        res.status(200).send({
+            todo: result,
+            Status : 1,
+            Description: 'Delete todo successfull'
+        })
+    }).catch((e) => {
+         // find not found return 400
+        return res.status(400).send(e);
+    });
+   
+});
 
 
 
