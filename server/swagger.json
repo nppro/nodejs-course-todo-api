@@ -80,6 +80,26 @@
                         }
                     }   
                 }
+            },
+            "delete": {
+                "tags": ["todos"],
+                "summary": "Delete Todos by ID",
+                "description":"Xóa todo theo 1 id truyền vào",
+                "parameters":[{
+                    "name":"id",
+                    "in":"path",
+                    "description":"Todos to filter by id",
+                    "type":"string",
+                    "required":true
+                }],
+                "responses":{
+                    "200": {
+                        "description":"Delete Todo Ok!"                
+                    },
+                    "404": {
+                        "description":"Id not valid or not found todo!"
+                    }   
+                }
             }
         }
     
