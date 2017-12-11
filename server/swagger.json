@@ -100,6 +100,36 @@
                         "description":"Id not valid or not found todo!"
                     }   
                 }
+            },
+            "patch":{
+                "tags": ["todos"],
+                "summary": "Update Todos by ID",
+                "description":"cập nhật todo theo 1 id truyền vào",
+                "parameters":[{
+                    "name":"id",
+                    "in":"path",
+                    "description":"Todos to filter by id",
+                    "type":"string",
+                    "required":true
+                },
+                {
+                    "in": "body",
+                    "name": "body",
+                    "description": "Pet object that needs to be added to the store",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/todo"
+                    }
+                }
+                ],
+                "responses":{
+                    "200": {
+                        "description":"Update Todo Ok!"                
+                    },
+                    "404": {
+                        "description":"Id not valid or not found todo!"
+                    }   
+                }
             }
         }
     
