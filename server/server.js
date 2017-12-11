@@ -1,4 +1,5 @@
 // add module express, body-parser
+const _ = require('lodash'); 
 var express = require('express');
 var bodyParser = require('body-parser');
 
@@ -105,6 +106,32 @@ app.delete('/todos/:id', (req, res ) => {
    
 });
 
+app.patch('/todos/:id', (req, res) => {
+    var id = req.params.id;
+    var body = _.pick(req.body, ['text','completed']);
+    //check id valid 
+    if(!ObjectID.isValid(id)){
+        return res.status(404).send('Id not valid');
+    }
+
+    // checking boolean variable completed
+    if(_.isBoolean(body.completed) && body.completed){
+        // update completedAt cập nhật trường completedAt lúc thời điểm hiện tại
+        body.completedAt = new Date().getTime();
+    }else{
+        body.completed = false;
+        body.completedAt = null;
+    }
+
+    Todo.findByIdAndUpdate(id,{$set:body}, {new: true}).then((todo) => {
+        if(!todo){
+            return res.status(404).send('Todo not found');
+        }
+        res.status(200).send({todo:todo, Status: 1, Description: 'Update OK!'});
+    }).catch((e) => {
+        res.status(400).send(e);
+    })
+})
 
 
 
