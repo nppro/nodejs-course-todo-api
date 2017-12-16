@@ -1,3 +1,15 @@
+var env = process.env.NODE_ENV || 'development';
+console.log('env *****',env);
+
+if(env === 'development'){
+    process.env.PORT = 5000;
+    process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoApp';
+} else if(env === 'test') {
+    process.env.PORT = 5000;
+    process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoAppTest';
+}
+
+
 // add module express, body-parser
 const _ = require('lodash'); 
 var express = require('express');
@@ -21,6 +33,8 @@ app.get('/', (req, res) => {
     // dùng hàm res.redirect để chuyên hướng đường dẫn request tới đường dẫn mong muốn 
     res.redirect('/api-doc');
 });
+
+// <----------Todo----------->
 
 app.get('/todos', (req, res) => {
     Todo.find({})
@@ -67,6 +81,7 @@ app.get('/todos/:id', (req, res) => {
 });
 
 app.post('/todos', (req, res) => {
+    console.log(req);
     var todo = new Todo({
         text: req.body.text,
         completed: req.body.completed,
@@ -74,7 +89,7 @@ app.post('/todos', (req, res) => {
     });
 
     todo.save().then((doc) => {
-        res.send(doc);
+        res.status(200).send(doc);
     }, (err) => {
         res.status(400).send(err);
     })
@@ -133,6 +148,33 @@ app.patch('/todos/:id', (req, res) => {
     })
 })
 
+// <----------User----------->
+app.post('/users', (req , res) => {
+    //check req.body 
+    var body = _.pick(req.body, ['email','password']);
+    // res.send(req.body);
+    var user = new User(body);
+
+    // user.save().then((user) => {
+    //     if(!user)
+    //         return res.status(404).send('Add user fail');
+    //     res.status(200).send({
+    //         users: user,
+    //         Status: 1,
+    //         Description: 'Add user OK!'
+    //     });
+    // }).catch((e) => {
+    //     res.status(400).send(e);
+    // });
+
+    user.save().then(() => {
+        return user.generateAuthToken();
+    }).then((token) => {
+        res.header('x-auth', token).send(user);
+    }).catch((e) => {
+        res.status(400).send(e);
+    })
+});
 
 
 app.listen(port, () => {
