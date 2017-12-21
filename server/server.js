@@ -27,13 +27,13 @@ const port = process.env.PORT || 5000;
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
-// app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(bodyParser.json());
 
-// app.get('/', (req, res) => {
-//     // dùng hàm res.redirect để chuyên hướng đường dẫn request tới đường dẫn mong muốn 
-//     res.redirect('/api-doc');
-// });
+app.get('/', (req, res) => {
+    // dùng hàm res.redirect để chuyên hướng đường dẫn request tới đường dẫn mong muốn 
+    res.redirect('/api-doc');
+});
 
 // <----------Todo----------->
 
@@ -174,16 +174,30 @@ app.post('/users', (req , res) => {
         res.header('x-auth', token).send(user);
     }).catch((e) => {
         res.status(400).send(e);
-    })
+    });
 });
 
 
 // gỉa thuyết đặt ra là phải có 1 hàm xét token để khỏi phải viết lại nhiều lần ở từng request
-
-
 app.get('/users/me', authenticate, (req,res) => {
     res.send(req.user);
 });
+
+// POST /users/login {email, password} hàm xử lý login
+app.post('/users/login', (req, res) => {
+    var body = _.pick(req.body, ['email', 'password']);
+
+    User.findByCredentials(body.email, body.password).then((user) => {
+        //nếu có giá trị trả về thì cấp token cho user này để sử dụng trong quá trình request
+        return user.generateAuthToken().then((token) => {
+            res.header('x-auth', token).send(user);
+        });
+        // res.send(user);
+    }).catch((e) => {
+        res.status(400).send(e);
+    });
+});
+
 
 
 app.listen(port, () => {
