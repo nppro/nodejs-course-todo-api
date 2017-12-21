@@ -1,5 +1,5 @@
 // Tạo model Todo 
-var {mongoose} = require('../db/mongoose');
+var mongoose = require('mongoose');
 
 var todoSchema = new mongoose.Schema({
     text: {
