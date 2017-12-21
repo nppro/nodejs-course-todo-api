@@ -13,6 +13,7 @@ var password = '123abc!';
 
 var hashedPassword = '$2a$10$QH7ENY9ApwlfruK6yopbqeJB..vIKT20VvxI1g3jxqVBbO2HYJW6.';
 
+// hàm dùng để so sánh giữa password ban đầu và được mã hóa, nếu trả về true là đúng 
 bcrypt.compare('123',hashedPassword, (err, res) => {
     console.log(res);
 })
