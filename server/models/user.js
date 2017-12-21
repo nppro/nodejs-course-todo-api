@@ -67,7 +67,7 @@ userSchema.methods.generateAuthToken = function () {
     return user.save().then(() => {
         return token;
     })
-}
+};
 
 // phương thức  tĩnh khi thực hiện tìm và decode token để tìm ra user
 userSchema.statics.findByToken = function (token) {
@@ -88,6 +88,30 @@ userSchema.statics.findByToken = function (token) {
         _id: decoded._id,
         'tokens.token':token,
         'tokens.access': 'auth'
+    });
+};
+
+// phương thức tìm password đã được mã hoá so sánh với dữ liệu truyền vào từ request login
+userSchema.statics.findByCredentials = function (email, password){
+    // find email
+    var User = this;
+
+    return User.findOne({email}).then((user) => {
+        if(!user){
+            return Promise.reject();
+        }
+        return new Promise((resolve, reject) => {
+            // so sánh giữa password được lấy từ request và password được mã hoá ở database
+            bcrypt.compare(password, user.password, (err, res) => {
+                if(res){
+                    // giá trị true thì trả về user vừa nhận được
+                    resolve(user);
+                } else{
+                    // ngược lại thì trả hàm reject()
+                    reject();
+                }
+            })
+        });
     })
 };
 
