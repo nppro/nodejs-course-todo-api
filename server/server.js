@@ -27,13 +27,13 @@ const port = process.env.PORT || 5000;
 const swaggerUI = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
 
-app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+// app.use('/api-doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-    // dùng hàm res.redirect để chuyên hướng đường dẫn request tới đường dẫn mong muốn 
-    res.redirect('/api-doc');
-});
+// app.get('/', (req, res) => {
+//     // dùng hàm res.redirect để chuyên hướng đường dẫn request tới đường dẫn mong muốn 
+//     res.redirect('/api-doc');
+// });
 
 // <----------Todo----------->
 
